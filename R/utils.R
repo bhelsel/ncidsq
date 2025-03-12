@@ -1,0 +1,48 @@
+load_constants <- function(environment = .GlobalEnv){
+  load("inst/extdata/constants.RData")
+  invisible(lapply(names(constants), function(x) assign(x, constants[[x]], envir = environment)))
+}
+
+update_r_data_from_excel <- function(xlsx_directory){
+  all_file_names <- c()
+  for(file in list.files(xlsx_directory, pattern = ".xlsx$", full.names = TRUE)){
+    name <- gsub("[.]", "_", gsub(".xlsx$", "", basename(file)))
+    all_file_names <- c(all_file_names, name)
+    assign(name, readxl::read_xlsx(file))
+  }
+  constants <- setNames(lapply(all_file_names, get), all_file_names)
+  save(constants, file = file.path(dirname(xlsx_directory), "constants.RData"))
+}
+
+
+
+rename_variables <- function(data){
+  load_constants(environment = environment())
+  rename_vector <- setNames(variable_crosswalk$nci, variable_crosswalk$kumc)
+  colnames(data) <-
+    ifelse(colnames(data) %in% names(rename_vector),
+      rename_vector[colnames(data)], colnames(data))
+  for(i in names(data)){
+    attr(data[[i]], "label") <- variable_crosswalk$labels[which(variable_crosswalk$nci == i)]
+  }
+  attr(data, "variables") <- variable_crosswalk$nci
+  attr(data, "outliers") <- variable_crosswalk$outliers
+  return(data)
+}
+
+
+
+diet_frequency_table <- function(){
+  category <- c(
+    "Never", "1 time last month", "2-3 times last month", "1 time per week",
+    "2 times per week", "3-4 times per week", "5-6 times per week", "1 time per day",
+    "2 or more times per day", "2-3 times per day", "4-5 times per day",
+    "6 ore more times per day"
+  )
+  foods <- c(0, 0.033, 0.083, 0.143, 0.286, 0.5, 0.786, 1, 2, NA, NA, NA)
+  beverages <- c(0, 0.033, 0.083, 0.143, 0.286, 0.5, 0.786, 1, NA, 2.5, 4.5, 6)
+  data.frame(category, foods, beverages)
+}
+
+
+
