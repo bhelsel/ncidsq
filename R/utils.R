@@ -31,7 +31,7 @@ update_r_data_from_excel <- function(xlsx_directory){
     all_file_names <- c(all_file_names, name)
     assign(name, readxl::read_xlsx(file))
   }
-  constants <- stats::setNames(lapply(all_file_names, get), all_file_names)
+  constants <- stats::setNames(lapply(all_file_names, function(x) get(x, envir = environment())), all_file_names)
   save(constants, file = file.path(dirname(xlsx_directory), "constants.RData"))
 }
 
