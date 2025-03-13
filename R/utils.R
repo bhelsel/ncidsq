@@ -12,6 +12,21 @@ load_constants <- function(environment = .GlobalEnv){
   invisible(lapply(names(constants), function(x) assign(x, constants[[x]], envir = environment)))
 }
 
+#' @title remove_constants
+#' @description FUNCTION_DESCRIPTION
+#' @param environment PARAM_DESCRIPTION, Default: .GlobalEnv
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname remove_constants
+#' @export
+
+
+remove_constants <- function(environment = .GlobalEnv){
+  load("inst/extdata/constants.RData")
+  rm(list = names(constants), envir = environment)
+}
+
+
 #' @title update_r_data_from_excel
 #' @description FUNCTION_DESCRIPTION
 #' @param xlsx_directory PARAM_DESCRIPTION
@@ -39,15 +54,16 @@ update_r_data_from_excel <- function(xlsx_directory){
 #' @title rename_variables
 #' @description FUNCTION_DESCRIPTION
 #' @param data PARAM_DESCRIPTION
+#' @param reference PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @rdname rename_variables
 #' @export
 #' @importFrom stats setNames
 
-rename_variables <- function(data){
+rename_variables <- function(data, reference = "kumc"){
   load_constants(environment = environment())
-  rename_vector <- stats::setNames(variable_crosswalk$nci, variable_crosswalk$kumc)
+  rename_vector <- stats::setNames(variable_crosswalk$nci, variable_crosswalk[[reference]])
   colnames(data) <-
     ifelse(colnames(data) %in% names(rename_vector),
       rename_vector[colnames(data)], colnames(data))
@@ -88,7 +104,7 @@ diet_frequency_table <- function(){
 
 retrieve_norms <- function(gender = c("male", "female"), type = c("nhanes", "recommendations")){
   gender <- match.arg(gender, several.ok = TRUE); type <- match.arg(type, several.ok = TRUE)
-  load_constants()
+  load_constants(environment = environment())
   variables <- as.character(sapply(gender, function(x) paste0(x, "_", type)))
   return(nutrient_norms[, c("variable", "label", "unit", variables)])
 }
