@@ -1,7 +1,28 @@
+#' @title load_constants
+#' @description FUNCTION_DESCRIPTION
+#' @param environment PARAM_DESCRIPTION, Default: .GlobalEnv
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname load_constants
+#' @export
+
+
 load_constants <- function(environment = .GlobalEnv){
   load("inst/extdata/constants.RData")
   invisible(lapply(names(constants), function(x) assign(x, constants[[x]], envir = environment)))
 }
+
+#' @title update_r_data_from_excel
+#' @description FUNCTION_DESCRIPTION
+#' @param xlsx_directory PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @seealso
+#'  \code{\link[readxl]{read_excel}}
+#' @rdname update_r_data_from_excel
+#' @keywords internal
+#' @importFrom readxl read_xlsx
+#' @importFrom stats setNames
 
 update_r_data_from_excel <- function(xlsx_directory){
   all_file_names <- c()
@@ -10,15 +31,23 @@ update_r_data_from_excel <- function(xlsx_directory){
     all_file_names <- c(all_file_names, name)
     assign(name, readxl::read_xlsx(file))
   }
-  constants <- setNames(lapply(all_file_names, get), all_file_names)
+  constants <- stats::setNames(lapply(all_file_names, get), all_file_names)
   save(constants, file = file.path(dirname(xlsx_directory), "constants.RData"))
 }
 
 
+#' @title rename_variables
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname rename_variables
+#' @export
+#' @importFrom stats setNames
 
 rename_variables <- function(data){
   load_constants(environment = environment())
-  rename_vector <- setNames(variable_crosswalk$nci, variable_crosswalk$kumc)
+  rename_vector <- stats::setNames(variable_crosswalk$nci, variable_crosswalk$kumc)
   colnames(data) <-
     ifelse(colnames(data) %in% names(rename_vector),
       rename_vector[colnames(data)], colnames(data))
@@ -30,7 +59,12 @@ rename_variables <- function(data){
   return(data)
 }
 
-
+#' @title diet_frequency_table
+#' @description FUNCTION_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname diet_frequency_table
+#' @keywords internal
 
 diet_frequency_table <- function(){
   category <- c(

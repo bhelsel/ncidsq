@@ -1,3 +1,18 @@
+#' @title calculate_age_at_visit
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @param id PARAM_DESCRIPTION
+#' @param timepoint PARAM_DESCRIPTION
+#' @param birthdate PARAM_DESCRIPTION
+#' @param visitdate PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname calculate_age_at_visit
+#' @export
+#' @importFrom dplyr `%>%`
+
+
+
 calculate_age_at_visit <- function(data, id, timepoint, birthdate, visitdate){
 
   if(length(visitdate) == 3){

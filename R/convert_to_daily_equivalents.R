@@ -1,3 +1,11 @@
+#' @title convert_to_daily_equivalents
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname convert_to_daily_equivalents
+#' @export
+
 convert_to_daily_equivalents <- function(data){
   load_constants(environment = environment())
   dietfreq <- diet_frequency_table()

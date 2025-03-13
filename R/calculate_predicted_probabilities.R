@@ -1,3 +1,14 @@
+#' @title calculate_predicted_probabilities
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @seealso
+#'  \code{\link[dplyr]{mutate-joins}}, \code{\link[dplyr]{join_by}}
+#' @rdname calculate_predicted_probabilities
+#' @export
+#' @importFrom dplyr left_join join_by
+
 calculate_predicted_probabilities <- function(data){
   load_constants(environment = environment())
   joined_df <- dplyr::left_join(x = data, y = calib_equation_coeff, by = dplyr::join_by(sex == gender))

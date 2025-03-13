@@ -1,3 +1,11 @@
+#' @title apply_factor_labels
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname apply_factor_labels
+#' @export
+
 apply_factor_labels <- function(data){
   load_constants(environment = environment())
   common <- c(

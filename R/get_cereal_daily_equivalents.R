@@ -1,11 +1,23 @@
-
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param data get_cereal_daily_equivalents
+#' @param cereal_names PARAM_DESCRIPTION, Default: c("cereal_type1", "cereal_type2")
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @seealso
+#'  \code{\link[dplyr]{mutate-joins}}, \code{\link[dplyr]{join_by}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname get_cereal_daily_equivalents
+#' @export
+#' @importFrom dplyr left_join join_by
+#' @importFrom rlang sym
 
 get_cereal_daily_equivalents <- function(data, cereal_names = c("cereal_type1", "cereal_type2")){
 
   load_constants(environment = environment())
 
   for(v in 1:length(cereal_names)){
-    data[[cereal_names[v]]] <- gsub("Õ","'", iconv(data[[cereal_names[v]]], from = "ISO-8859-1", to = "UTF-8"))
+    data[[cereal_names[v]]] <- gsub("\u00D5","'", iconv(data[[cereal_names[v]]], from = "ISO-8859-1", to = "UTF-8"))
     assign(sprintf("n_%s", cereal_names[v]), length(data[data[[cereal_names[v]]] != "", cereal_names[v], drop = TRUE]))
     if(v == 1){
       data <- data %>% dplyr::left_join(calib_DSQ_cereal_ntile, by = dplyr::join_by(!!rlang::sym(cereal_names[v]) == Cereal_Name))

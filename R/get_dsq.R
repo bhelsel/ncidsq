@@ -1,4 +1,11 @@
-
+#' @title get_dsq
+#' @description FUNCTION_DESCRIPTION
+#' @param data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname get_dsq
+#' @export
+#' @importFrom dplyr `%>%`
 
 get_dsq <- function(data){
   data %>%
