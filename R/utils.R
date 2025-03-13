@@ -79,4 +79,19 @@ diet_frequency_table <- function(){
 }
 
 
+#' @title retrieve_norms
+#' @description FUNCTION_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @rdname retrieve_norms
+#' @keywords internal
+
+retrieve_norms <- function(gender = c("male", "female"), type = c("nhanes", "recommendations")){
+  gender <- match.arg(gender, several.ok = TRUE); type <- match.arg(type, several.ok = TRUE)
+  load_constants()
+  variables <- as.character(sapply(gender, function(x) paste0(x, "_", type)))
+  return(nutrient_norms[, c("variable", "label", "unit", variables)])
+}
+
+
 
